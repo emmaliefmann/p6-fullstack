@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Topic } from 'src/app/models/topic.model';
+import { TopicService } from 'src/app/services/topic.service';
 
 @Component({
   selector: 'app-home',
@@ -6,11 +9,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  constructor() {}
+  constructor(private topicService: TopicService) {}
 
-  ngOnInit(): void {}
-
-  start() {
-    alert('Commencez par lire le README et à vous de jouer !');
+  public topics!: Topic[];
+  
+  ngOnInit(): void {
+    
   }
+
+
 }

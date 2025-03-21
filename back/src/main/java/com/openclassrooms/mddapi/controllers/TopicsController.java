@@ -4,11 +4,13 @@ import com.openclassrooms.mddapi.dtos.TopicListDTO;
 import com.openclassrooms.mddapi.services.TopicsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/topic")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TopicsController {
     private final TopicsService topicsService;
 
