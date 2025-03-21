@@ -13,6 +13,18 @@ public class Topic {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
     public Long getTopic_id() {
         return topic_id;
     }
