@@ -1,0 +1,15 @@
+:host {
+    h1 {
+        text-align: center;
+        padding: 1rem;
+    }
+    ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        li {
+            padding: 1rem;
+            width:40%;
+        }
+    }
+}
