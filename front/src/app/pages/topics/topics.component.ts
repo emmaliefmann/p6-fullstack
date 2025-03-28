@@ -4,12 +4,13 @@ import { Topic } from 'src/app/models/topic.model';
 import { TopicList } from 'src/app/models/topicList.model';
 import { TopicService } from 'src/app/services/topic.service';
 import {MatCardModule} from '@angular/material/card';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: 'app-topics',
     templateUrl: './topics.component.html',
     styleUrls: ['./topics.component.scss'],
-    imports: [MatCardModule],
+    imports: [MatCardModule, NgFor],
     standalone: true
 })
 export class TopicsComponent implements OnInit {
