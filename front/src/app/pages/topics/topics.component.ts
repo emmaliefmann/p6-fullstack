@@ -5,9 +5,10 @@ import { TopicList } from 'src/app/models/topicList.model';
 import { TopicService } from 'src/app/services/topic.service';
 
 @Component({
-  selector: 'app-topics',
-  templateUrl: './topics.component.html',
-  styleUrls: ['./topics.component.scss']
+    selector: 'app-topics',
+    templateUrl: './topics.component.html',
+    styleUrls: ['./topics.component.scss'],
+    standalone: false
 })
 export class TopicsComponent implements OnInit {
 
