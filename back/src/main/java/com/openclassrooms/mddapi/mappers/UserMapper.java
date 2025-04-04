@@ -16,8 +16,9 @@ public class UserMapper {
         this.modelMapper = modelMapper;
     }
 
-    public User convertToEntity(UserRequestDTO request) {
+    public User convertToEntity(UserRequestDTO request, String password) {
         User user = modelMapper.map(request, User.class);
+        user.setPassword(password);
         user.setCreated_at(LocalDateTime.now());
         return user;
     }

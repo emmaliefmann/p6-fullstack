@@ -1,10 +1,16 @@
 package com.openclassrooms.mddapi.services;
 
+import com.openclassrooms.mddapi.dtos.LoginRequestDTO;
 import com.openclassrooms.mddapi.dtos.UserRequestDTO;
 import com.openclassrooms.mddapi.dtos.UserResponseDTO;
 import com.openclassrooms.mddapi.entities.User;
 import com.openclassrooms.mddapi.mappers.UserMapper;
 import com.openclassrooms.mddapi.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,13 +18,18 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    @Autowired
+    AuthenticationManager authManager;
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponseDTO createUser(UserRequestDTO userDTO) {
@@ -27,9 +38,20 @@ public class UserService {
             throw new RuntimeException("User with this email already exists");
         }
         // encrypt password when security installed and configured
-        User user = userMapper.convertToEntity(userDTO);
+        String password = passwordEncoder.encode(userDTO.getPassword());
+        User user = userMapper.convertToEntity(userDTO, password);
         userRepository.save(user);
         return getUserByEmail(userDTO.getEmail());
+    }
+
+    public String verifyUser(LoginRequestDTO login) {
+        Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+        if (auth.isAuthenticated()) {
+            return "success";
+        } else if (!auth.isAuthenticated()) {
+            throw new RuntimeException("Incorrect username password combination");
+        }
+        throw new RuntimeException("Incorrect username password combination");
     }
 
     public UserResponseDTO getUserByEmail(String email) {
