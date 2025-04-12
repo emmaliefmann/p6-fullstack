@@ -23,7 +23,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public TokenResponseDTO login(@RequestBody LoginRequestDTO login) {
-        return userService.verifyUser(login);
+    public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginRequestDTO login) {
+        System.out.println("controller");
+        TokenResponseDTO token = userService.verifyUser(login);
+        System.out.println(token.getToken());
+        return ResponseEntity.ok().body(token);
     }
 }

@@ -48,9 +48,11 @@ public class UserService {
     }
 
     public TokenResponseDTO verifyUser(LoginRequestDTO login) {
+        System.out.println("Service called");
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
         if (auth.isAuthenticated()) {
             String token = jwtService.generateToken(login.getEmail());
+            System.out.println(token);
             TokenResponseDTO response = new TokenResponseDTO();
             response.setToken(token);
             return response;

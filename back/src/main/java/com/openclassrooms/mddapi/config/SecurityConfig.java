@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -27,15 +28,19 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private JWTFilter jwtFilter;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println(">>> SecurityFilterChain is being applied!");
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request
-                        .anyRequest().permitAll())
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated())
                 .httpBasic(httpBasic -> httpBasic.disable())
-                .formLogin(form -> form.disable());
+                //.formLogin(form -> form.disable())
+                .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
 
