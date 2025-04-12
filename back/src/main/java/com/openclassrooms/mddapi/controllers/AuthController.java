@@ -1,9 +1,6 @@
 package com.openclassrooms.mddapi.controllers;
 
-import com.openclassrooms.mddapi.dtos.LoginRequestDTO;
-import com.openclassrooms.mddapi.dtos.LoginResponseDTO;
-import com.openclassrooms.mddapi.dtos.UserRequestDTO;
-import com.openclassrooms.mddapi.dtos.UserResponseDTO;
+import com.openclassrooms.mddapi.dtos.*;
 import com.openclassrooms.mddapi.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +23,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDTO login) {
-        return userService.verifyUser(login);
+    public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginRequestDTO login) {
+        System.out.println("controller");
+        TokenResponseDTO token = userService.verifyUser(login);
+        System.out.println(token.getToken());
+        return ResponseEntity.ok().body(token);
     }
 }
