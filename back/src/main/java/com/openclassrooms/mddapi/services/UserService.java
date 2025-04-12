@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.services;
 
 import com.openclassrooms.mddapi.dtos.LoginRequestDTO;
+import com.openclassrooms.mddapi.dtos.TokenResponseDTO;
 import com.openclassrooms.mddapi.dtos.UserRequestDTO;
 import com.openclassrooms.mddapi.dtos.UserResponseDTO;
 import com.openclassrooms.mddapi.entities.User;
@@ -21,10 +22,12 @@ public class UserService {
     @Autowired
     AuthenticationManager authManager;
 
+    @Autowired
+    JWTService jwtService;
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-
     public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
@@ -44,10 +47,13 @@ public class UserService {
         return getUserByEmail(userDTO.getEmail());
     }
 
-    public String verifyUser(LoginRequestDTO login) {
+    public TokenResponseDTO verifyUser(LoginRequestDTO login) {
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
         if (auth.isAuthenticated()) {
-            return "success";
+            String token = jwtService.generateToken(login.getEmail());
+            TokenResponseDTO response = new TokenResponseDTO();
+            response.setToken(token);
+            return response;
         } else if (!auth.isAuthenticated()) {
             throw new RuntimeException("Incorrect username password combination");
         }
