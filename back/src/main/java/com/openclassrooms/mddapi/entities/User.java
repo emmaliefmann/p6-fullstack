@@ -3,6 +3,8 @@ package com.openclassrooms.mddapi.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +24,9 @@ public class User {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime created_at;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscriptions = new ArrayList<>();
 
     public long getUser_id() {
         return user_id;

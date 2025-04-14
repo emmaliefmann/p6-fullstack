@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.services;
 
+import com.openclassrooms.mddapi.dtos.SubscriptionDTO;
 import com.openclassrooms.mddapi.dtos.TopicDTO;
 import com.openclassrooms.mddapi.dtos.TopicListDTO;
 import com.openclassrooms.mddapi.entities.Topic;
@@ -32,4 +33,8 @@ public class TopicsService {
 
         return list;
     }
+
+//    public void subscribeToTopic(SubscriptionDTO subscription) {
+//
+//    }
 }

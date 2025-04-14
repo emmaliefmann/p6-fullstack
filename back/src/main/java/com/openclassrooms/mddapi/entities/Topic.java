@@ -3,6 +3,9 @@ package com.openclassrooms.mddapi.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "topics")
 public class Topic {
@@ -16,6 +19,10 @@ public class Topic {
 
     @Column
     private String description;
+
+    @OneToMany(mappedBy = "topic")
+    // with BO for topics, add orphan removal
+    private List<Subscription> subscriptions = new ArrayList<>();
 
     public String getDescription() {
         return description;
