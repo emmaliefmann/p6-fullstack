@@ -50,7 +50,5 @@ public class Topic {
         this.name = name;
     }
 
-    //Join table user_subscription
-
     // Join table with article topic
 }

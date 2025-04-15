@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/topic")
+@RequestMapping("/topics")
 @CrossOrigin(origins = "http://localhost:4200")
 public class TopicsController {
     private final TopicsService topicsService;
@@ -25,7 +25,8 @@ public class TopicsController {
     }
 
     @PostMapping("/{id}/subscribe")
-    public void subscribeToTopic(@PathVariable int id) {
-
+    public ResponseEntity<String> subscribeToTopic(@PathVariable Long id) {
+        String message = topicsService.subscribeToTopic(id);
+        return ResponseEntity.ok().body(message);
     }
 }

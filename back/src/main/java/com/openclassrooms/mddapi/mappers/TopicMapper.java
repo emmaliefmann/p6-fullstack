@@ -1,7 +1,9 @@
 package com.openclassrooms.mddapi.mappers;
 
 import com.openclassrooms.mddapi.dtos.TopicDTO;
+import com.openclassrooms.mddapi.entities.Subscription;
 import com.openclassrooms.mddapi.entities.Topic;
+import com.openclassrooms.mddapi.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -17,5 +19,12 @@ public class TopicMapper {
         TopicDTO dto = modelMapper.map(topic, TopicDTO.class);
         dto.setId(topic.getTopic_id());
         return dto;
+    }
+
+    public Subscription convertToSubscriptionEntity(Topic topic, User user) {
+        Subscription entity = new Subscription();
+        entity.setTopic(topic);
+        entity.setUser(user);
+        return entity;
     }
 }
