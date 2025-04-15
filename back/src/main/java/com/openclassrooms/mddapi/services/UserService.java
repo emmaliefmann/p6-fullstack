@@ -44,15 +44,13 @@ public class UserService {
         String password = passwordEncoder.encode(userDTO.getPassword());
         User user = userMapper.convertToEntity(userDTO, password);
         userRepository.save(user);
-        return getUserByEmail(userDTO.getEmail());
+        return getUserDTOByEmail(userDTO.getEmail());
     }
 
     public TokenResponseDTO verifyUser(LoginRequestDTO login) {
-        System.out.println("Service called");
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
         if (auth.isAuthenticated()) {
             String token = jwtService.generateToken(login.getEmail());
-            System.out.println(token);
             TokenResponseDTO response = new TokenResponseDTO();
             response.setToken(token);
             return response;
@@ -62,9 +60,14 @@ public class UserService {
         throw new RuntimeException("Incorrect username password combination");
     }
 
-    public UserResponseDTO getUserByEmail(String email) {
+    public UserResponseDTO getUserDTOByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return userMapper.convertToResponseEntity(user);
+    }
+
+    public User getUserEntityByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
